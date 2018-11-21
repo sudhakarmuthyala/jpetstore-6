@@ -46,9 +46,12 @@ node{
 	}
 	
 	stage('Pushing images to Nexus Registry'){
-	    sh """ docker login -u admin -p admin123 localhost:8083
-                  docker tag 12cb23fcc652${params.ImageID} localhost:8083/${params.ImageID}:$BUILD_NUMBER
-                  docker push localhost:8083/${params.ImageID}
-               """
+		withCredentials([usernamePassword(credentialsId: 'nexusdocker', passwordVariable: 'password', usernameVariable: 'username'),string(credentialsId: 'nexushost', variable: 'hostname')]) {
+	       		sh """docker login -u $username -p $password $hostname:8083
+	                      docker tag 12cb23fcc652${params.ImageID} $hostname:8083/${params.ImageID}:$BUILD_NUMBER
+                  	      docker push $hostname:8083/${params.ImageID}
+                    	   """
+		}
 	}
+		
 }
