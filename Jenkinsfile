@@ -46,9 +46,9 @@ node{
 	}
 	
 	stage('Pushing images to Nexus Registry'){
-	    sh '''docker login -u admin -p admin123 localhost:8083
+	    sh """ docker login -u admin -p admin123 localhost:8083
                   docker tag 12cb23fcc652${params.ImageID} localhost:8083/${params.ImageID}:$BUILD_NUMBER
                   docker push localhost:8083/${params.ImageID}
-               '''
+               """
 	}
 }
