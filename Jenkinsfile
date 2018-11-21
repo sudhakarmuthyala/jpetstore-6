@@ -1,3 +1,5 @@
+properties([parameters([string(defaultValue: '', description: 'Specify the ImageID', name: 'ImageID')]])
+	    
 node{
     
     stage('Pull the code'){
@@ -45,8 +47,8 @@ node{
 	
 	stage('Pushing images to Nexus Registry'){
 	    sh '''docker login -u admin -p admin123 localhost:8083
-              docker tag 12cb23fcc652 localhost:8083/jpets:17
-              docker push localhost:8083/jpets
-            '''
+                  docker tag 12cb23fcc652${params.ImageID} localhost:8083/${params.ImageID}:$BUILD_NUMBER
+                  docker push localhost:8083/${params.ImageID}
+               '''
 	}
 }
