@@ -16,7 +16,7 @@
 
 FROM tomcat:8.0
 MAINTAINER Sai Babu sai.tangs45@gmail.com
-WORKDIR /var/lib/jenkins/workspace/akstask/
+WORKDIR /var/lib/jenkins/workspace/aksproject
 COPY /target/jpetstore.war /opt/tomcat/webapps
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "jpetstore.war"]
