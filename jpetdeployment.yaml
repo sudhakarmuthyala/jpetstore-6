@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+  labels:
+    name: development
+    env: dev
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: jpets
+  namespace: dev
+  annotations:
+    kubernetes.io/change-cause: upgrading version
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jpets
+  template:
+    metadata:
+      labels:
+        app: jpets
+        env: dev
+    spec:
+      containers:
+      - name: jpets
+        image: localhost:8083/jpets:18
+        ports:
+        - containerPort: 8080
+      imagePullSecrets: 
+      - name: nexussecret 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: jpets-service
+  namespace: dev
+  labels:
+    app: jpets-dev
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30008
+  selector:
+    app: jpets
+    env: dev
+  type: NodePort 
+
