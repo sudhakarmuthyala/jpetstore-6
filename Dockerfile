@@ -14,9 +14,12 @@
 #    limitations under the License.
 #
 
-FROM tomcat:8.0
-MAINTAINER Sai Babu sai.tangs45@gmail.com
-WORKDIR /var/lib/jenkins/workspace/aksproject
-COPY /target/jpetstore.war /opt/tomcat/webapps
+FROM tomcat:8.5-jre8
+
+WORKDIR /var/lib/jenkins/workspace/aksproject/
+
+COPY target/jpetstore.war /usr/local/tomcat/webapps/jpetstore.war
+
+CMD /usr/local/tomcat/bin/catalina.sh start
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "jpetstore.war"]
