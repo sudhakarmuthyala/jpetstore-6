@@ -16,10 +16,10 @@
 
 FROM tomcat:8.5-jre8
 
-WORKDIR /var/lib/jenkins/workspace/aksproject/gameoflife-web/
+WORKDIR /var/lib/jenkins/workspace/aksproject/
 
-COPY target/gameoflife.war /usr/local/tomcat/webapps/jpetstore.war
+COPY target/jpetstore.war /usr/local/tomcat/webapps/jpetstore.war
 
-CMD /usr/local/tomcat/bin/catalina.sh start
+CMD sh /usr/local/tomcat/bin/catalina.sh start
 
-EXPOSE 8080
+EXPOSE 7766
