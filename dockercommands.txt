@@ -1,0 +1,64 @@
+--> vi Dockerfile
+
+--> docker images   --- to list the images
+
+--> dcoker rmi imagesid    -- to delete the images
+
+--> docker build -t jpets:${BUILD_NUMBER} Dockerfileloation
+
+--> docker run -i -t imageid /bin/bash   -- to make a conainer
+
+--> docker rmi ID --force  --- to delete forcefully
+
+--> ip add | grep global     --- to get the ips
+
+--> ctrl pq --- to exit safely from container
+
+--> docker ps --- to see running container
+
+--> docker ps -a   --- to see all the the exited ad running containers
+
+--> docker exec -it container_id /bin/bash    -- to enner into the container
+
+--> docker run -it --rm -p 8080:8080 --name newtom newtom:2.0
+
+--> docker run --rm --name newtown -p 8080:8080 -d tomcatimage:1.0
+
+--> docker run -it -p 8889:8080 imageid:tag /bin/bash ---> to run a image
+
+      ---  here lefthand side ip i.e, 8889 is the machine ip and right hand side ip 8080 is the container ip(i.e, tomcat ip). In this case we are mapping tomcat container ip with machine avaiable ips.
+
+--> docker start containerid  ---  to start the stopped container
+
+-->  docker attach conatinerID --- to enter into the conatiner
+
+
+
+How push the docker images to docker hub:- 
+
+-----> docker login  and it will ask for username and password
+
+-----> docker tag IMAGEid docker.io/Username/imagename:tag(ex: 2.0)
+
+-----> docker push docker.io/Username/imagename
+
+How to push the docker images to nexus registry:-
+
+----> docker login -u usrname -p password <nexus-hostname>:<repository-port>
+
+----> docker tag <imageId or imageName> <nexus-hostname>:<repository-port>/<image>:<tag>
+
+----> docker push <nexus-hostname>:<repository-port>/<image>:<tag>
+
+
+
+
+
+
+
+
+
+
+
+
+
