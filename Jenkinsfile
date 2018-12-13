@@ -11,6 +11,10 @@ node{
         def mvn="${m2home}/bin/"
         sh "${mvn}/mvn package"
     }
+	
+    stage('junit testing'){
+        junit 'target/surefire-reports/*.xml'
+    }
     
     stage('Uploding the artifacts'){
         nexusArtifactUploader artifacts: [[artifactId: 'jpetstore', classifier: '', file: 'target/jpetstore.war', type: 'war']], credentialsId: 'nexus', groupId: 'jpetstore', nexusUrl: '107.23.199.186:8081/repository/jpetstore/', nexusVersion: 'nexus2', protocol: 'http', repository: 'jpetstore', version: '$BUILD_NUMBER'
