@@ -22,4 +22,4 @@ COPY target/jpetstore.war /usr/local/tomcat/webapps/jpetstore.war
 
 CMD sh /usr/local/tomcat/bin/catalina.sh start
 
-EXPOSE 7766
+EXPOSE 8080
