@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 
-       Copyright 2010-2017 the original author or authors.
+       Copyright 2010-2018 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -119,6 +119,45 @@
       <artifactId>hsqldb</artifactId>
       <version>2.3.5</version> <!-- Version 2.4.0 requires jdk8 -->
     </dependency>
+
+<dependency>
+  <groupId>org.stagemonitor</groupId>
+  <artifactId>stagemonitor-web-servlet</artifactId>
+  <version>0.88.8</version>
+</dependency>
+		
+		<dependency>
+  <groupId>org.stagemonitor</groupId>
+  <artifactId>stagemonitor-jvm</artifactId>
+  <version>0.88.8</version>
+</dependency>
+		<dependency>
+  <groupId>org.stagemonitor</groupId>
+  <artifactId>stagemonitor-jdbc</artifactId>
+  <version>0.88.8</version>
+</dependency>
+		<dependency>
+  <groupId>org.stagemonitor</groupId>
+  <artifactId>stagemonitor-alerting</artifactId>
+  <version>0.88.8</version>
+</dependency>
+                
+                <dependency>
+  <groupId>org.stagemonitor</groupId>
+  <artifactId>stagemonitor-configuration</artifactId>
+  <version>0.88.8</version>
+</dependency>
+                <dependency>
+    <groupId>org.stagemonitor</groupId>
+    <artifactId>stagemonitor-tracing-elasticsearch</artifactId>
+    <version>0.88.8</version>
+</dependency>
+               <dependency>
+    <groupId>org.stagemonitor</groupId>
+    <artifactId>stagemonitor-tracing</artifactId>
+    <version>0.88.8</version>
+</dependency>
+
 
     <!-- Test dependencies -->
     <dependency>
