@@ -1,4 +1,4 @@
-Name of the application.
+# Name of the application.
 # It is highly recommended to set this to a short and descriptive name of you application (default is "My Application".
 # The dashboards provide a filter for the application name.
 stagemonitor.applicationName=My Application
