@@ -1,0 +1,87 @@
+node{
+
+    stage('Pull the code'){
+        git credentialsId: 'Github', url: 'https://github.com/saiboby/jpetstore-6.git'
+    }
+
+    stage('Build the code'){
+        def m2home=tool name: 'maven', type: 'maven'
+        def mvn="${m2home}/bin/"
+        sh "${mvn}/mvn package"
+    }
+    stage('Sonar') {
+      def sonarRunner
+sonarRunner = tool 'SonarRunner'
+sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRunner/bin/sonar-runner ' +
+    '-Dsonar.host.url=http://13.233.194.173:8080 ' +
+    '-Dsonar.login=24deafb7916223f76ccdaed8eea2136a98c73179 ' +
+    '-Dsonar.projectName=newaks ' +
+    '-Dsonar.projectVersion=1.0 ' +
+    '-Dsonar.projectKey=newaks ' +
+    '-Dsonar.sources=/var/lib/jenkins/workspace/newaks/src/main/java/org/mybatis/jpetstore/domain ' +
+    '-Dsonar.java.binaries=/var/lib/jenkins/workspace/newaks/target/classes/org/mybatis/jpetstore/domain'
+
+}
+
+   stage('junit testing'){
+        junit 'target/surefire-reports/*.xml'
+    }
+    stage('Uploding the artifacts'){
+        nexusArtifactUploader artifacts: [[artifactId: 'jpetstore', classifier: '', file: 'target/jpetstore.war', type: 'war']], credentialsId: 'n', groupId: 'jpetstore', nexusUrl: '40.87.8.137:8081/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'jpetstore', version: '$BUILD_NUMBER'
+
+
+    }
+
+
+    stage('Deploy on tomcat'){
+        sh '''rm -rf /opt/tomcat/webapps/jpetstore.*
+
+                      cp -rf target/jpetstore.war /opt/tomcat/webapps
+
+                      sh /opt/tomcat/bin/catalina.sh stop
+
+                      sh /opt/tomcat/bin/catalina.sh start
+      '''
+    }
+
+    stage('Building docker image'){
+                sh 'docker build -t tomjpets:${BUILD_NUMBER} .'
+    }
+
+    stage('Validation'){
+                sh '''docker images > imagelist
+            cat imagelist | grep ${BUILD_NUMBER}
+
+        if [ $? -eq 0 ]
+            then
+        echo "image is there"
+            else
+        echo "no image"
+        fi
+        '''
+        }
+        
+        
+
+        stage('Pushing images to Nexus Registry'){
+                withCredentials([usernamePassword(credentialsId: 'nexusdocker', passwordVariable: 'password', usernameVariable: 'username'),string(credentialsId: 'nexushost', variable: 'hostname')]) {
+                        sh """docker login -u $username -p $password $hostname:8083
+                              docker tag 12cb23fcc652${params.ImageID} $hostname:8083/${params.ImageID}:$BUILD_NUMBER
+                              docker push $hostname:8083/${params.ImageID}
+                           """
+                }
+        }
+        
+        
+        
+        stage('pushing images to dockerhub'){
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
+                sh """  docker login -u $username -p $password docker.io/saiboby
+                docker tag 59a9573d5a27 docker.io/saiboby/tomjpets:7
+                # docker push docker.io/saiboby/tomjpets:7
+
+                """    
+                
+            }
+        }
+}
