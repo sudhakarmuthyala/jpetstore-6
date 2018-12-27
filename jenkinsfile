@@ -64,10 +64,10 @@ sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRun
         
 
         stage('Pushing images to Nexus Registry'){
-               withCredentials([string(credentialsId: 'host', variable: ''), usernamePassword(credentialsId: '4c387f68-c9af-46d5-a779-f67e1a1fb34a', passwordVariable: '', usernameVariable: '')]) {
-                        sh """docker login -u $user -p $pwd $hostname:8083
-                              docker tag 12cb23fcc652${params.ImageID} $hostname:8083/${params.ImageID}:$BUILD_NUMBER
-                              docker push $hostname:8083/${params.ImageID}
+               withCredentials([string(credentialsId: 'host', variable: ''), usernamePassword(credentialsId: 'nexus', passwordVariable: 'pwd1', usernameVariable: 'user1')]) {
+                        sh """docker login -u $user -p $pwd docker.io/saiboby
+                              docker tag 12cb23fcc652${params.ImageID} docker.io/saiboby/${params.ImageID}:$BUILD_NUMBER
+                              docker push docker.io/saiboby/${params.ImageID}
                            """
                 }
         }
@@ -76,7 +76,7 @@ sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRun
         
         stage('pushing images to dockerhub'){
             withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
-                sh """  docker login -u $username -p $password docker.io/saiboby
+                sh """  docker login -u $user -p $pwd docker.io/saiboby
                 docker tag 59a9573d5a27 docker.io/saiboby/tomjpets:7
                 # docker push docker.io/saiboby/tomjpets:7
 
