@@ -86,7 +86,7 @@ sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRun
          acsDeploy(azureCredentialsId: '4f070715-beee-4d15-91bc-0ea64c2bdb6d',
           resourceGroupName: 'vmazure',
           containerService: 'AKScluster | AKS',
-          configFilePaths: '**/*.yml',
+          configFilePaths: '**/Deployment.yml',
           enableConfigSubstitution: true,)
         }
         
