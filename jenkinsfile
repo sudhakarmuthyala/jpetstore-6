@@ -87,7 +87,7 @@ sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRun
           resourceGroupName: 'vmazure',
           containerService: 'AKScluster | AKS',
           configFilePaths: '**/*.yml',
-          enableConfigSubstitution: true,
+          enableConfigSubstitution: true,)
         }
         
 }
