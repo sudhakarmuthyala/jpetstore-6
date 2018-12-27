@@ -13,7 +13,7 @@ node{
       def sonarRunner
 sonarRunner = tool 'SonarRunner'
 sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRunner/bin/sonar-runner ' +
-    '-Dsonar.host.url=http://13.233.194.173:8080 ' +
+    '-Dsonar.host.url=http://13.233.251.112:8080 ' +
     '-Dsonar.login=24deafb7916223f76ccdaed8eea2136a98c73179 ' +
     '-Dsonar.projectName=newaks ' +
     '-Dsonar.projectVersion=1.0 ' +
