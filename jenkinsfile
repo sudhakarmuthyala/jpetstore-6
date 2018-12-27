@@ -77,8 +77,8 @@ sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRun
         stage('pushing images to dockerhub'){
             withCredentials([usernamePassword(credentialsId: '4c387f68-c9af-46d5-a779-f67e1a1fb34a', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                 sh """  docker login -u $user -p $pwd docker.io/saiboby
-                docker tag 59a9573d5a27 docker.io/saiboby/tomjpets:7
-                # docker push docker.io/saiboby/tomjpets:7
+                docker tag c304c71f7834 docker.io/saiboby/myimage
+                # docker push docker.io/saiboby/myimage
 
                 """    
                 
