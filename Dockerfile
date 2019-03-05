@@ -16,10 +16,10 @@
 
 FROM tomcat:8.5-jre8
 
-WORKDIR /var/lib/jenkins/workspace/aksproject/
+WORKDIR /usr/local/tomcat
 
 COPY target/jpetstore.war /usr/local/tomcat/webapps/jpetstore.war
 
-CMD sh /usr/local/tomcat/bin/catalina.sh start
+CMD ["catalina.sh", "run"]
 
 EXPOSE 8080
