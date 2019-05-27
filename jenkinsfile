@@ -91,3 +91,24 @@ sh '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarRun
         }
         
 }
+
+
+"""
+# the following is the declarative syntax pipeline code to login to the remote machine performa the required actions
+###############################################DSL code#############################################################################
+pipeline {
+    agent any 
+    stages {
+        stage("login stage"){
+            steps{
+                sshagent (credentials: ['password']) {
+                   sh """
+                        sshpass -p "vagrant" scp -o StrictHostKeyChecking=no /var/lib/jenkins/sai root@192.168.50.11:/home/vagrant1
+                   """
+                }             
+                sh "ls /var/lib/jenkins"
+        }
+        }
+    }
+}
+"""
