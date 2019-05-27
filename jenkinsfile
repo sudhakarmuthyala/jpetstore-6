@@ -105,6 +105,13 @@ pipeline {
                    sh """
                         sshpass -p "vagrant" scp -o StrictHostKeyChecking=no /var/lib/jenkins/sai root@192.168.50.11:/home/vagrant1
                    """
+                   
+                   or we can use the  withcredententials plugin to hid the password
+                   
+                   withCredentials([string(credentialsId: 'password', variable: 'pword')]) {
+                            sh """
+                        sshpass -p "$pword" scp -o StrictHostKeyChecking=no /var/lib/jenkins/sai root@192.168.50.11:/home/vagrant1
+                   """
                 }             
                 sh "ls /var/lib/jenkins"
         }
