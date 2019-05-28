@@ -103,7 +103,7 @@ pipeline {
             steps{
                 sshagent (credentials: ['password']) {
                    sh """
-                        sshpass -p "vagrant" scp -o StrictHostKeyChecking=no /var/lib/jenkins/sai root@192.168.50.11:/home/vagrant1
+                        sshpass -p "vagrant" ssh StrictHostKeyChecking=no ssh root@192.168.50.11 perform the commands
                    """
                    
                    or we can use the  withcredententials plugin to hid the password
