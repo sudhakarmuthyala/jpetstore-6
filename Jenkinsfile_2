@@ -1,0 +1,59 @@
+pipeline {
+	agent {
+	  label 'docker'
+     }
+   stages{
+		stage('Push Magellan Coverage To Sonar') {
+            
+           steps {
+                println "Stage::Push Code Coverage To Sonar::Starting: NIGHTLY_BUILD_DATE"
+
+                script {
+                    echo "executing the first stage"
+                }
+                            
+               println "Stage::Pushing of Reports to Sonar is Done::Ending: NIGHTLY_BUILD_DATE"
+            }
+        }
+
+		stage('Push Collector Coverage To Sonar') {
+			agent {
+				  docker {
+                    label 'docker'
+                    image 'ubuntu:latest'
+                    args '-u root:root'
+                    reuseNode true
+                }
+            }
+            steps {
+                println "Stage::Push Code Coverage To Sonar::Starting: NIGHTLY_BUILD_DATE"
+                
+                script {
+                   echo "executing the second stage"
+                }
+                   println "Stage::Pushing of Reports to Sonar is Done::Ending: "
+            }
+        }
+
+
+stage('Push Collector Coverage To Centos') {
+			agent {
+				docker {
+                    label 'docker'
+                    image 'centos:latest'
+                    args '-u root:root'
+                    reuseNode true
+                }
+            }
+	         steps {
+                println "Stage::Push Code Coverage To Sonar::Starting: NIGHTLY_BUILD_DATE"
+                
+                script {
+                   echo "executing the second stage"
+                }
+                
+                println "Stage::Pushing of Reports to Sonar is Done::Ending: "
+            }
+        }
+    }
+}
