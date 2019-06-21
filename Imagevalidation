@@ -1,0 +1,9 @@
+docker images > imagelist
+cat imagelist | grep ${BUILD_NUMBER}
+
+if [ $? -eq 0 ]
+then
+echo "image is there"
+else
+echo "no image"
+fi

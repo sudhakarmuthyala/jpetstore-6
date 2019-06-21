@@ -1,0 +1,83 @@
+//https://jenkins.io/blog/2018/07/02/whats-new-declarative-piepline-13x-sequential-stages/  ***REFERENCE LINK***
+
+pipeline {
+    agent { label 'docker'}
+	
+    stages {
+	
+		stage("Executing steps dcoker lable"){
+			steps{
+			    sh """
+				echo "excuting on docker label"
+				docker images
+				"""
+			}
+		}
+		// This is the phase where we can have new docker agent and can run three stages on the same agent
+        stage("Pushing Code Coverage_docker_container") {
+            
+                agent {
+					docker {
+						label "docker"
+						image 'centos:latest'
+						args '-u root:root'
+						//reuseNode true
+						}	
+                    }
+                stages {
+                    stage("Puushing Tessarac coverage") {
+						// This environment section is with respect to this substage only
+						environment {
+							CODE_DIRECTORY = '/opt'
+						}
+                        steps {
+							sh """
+								echo "Pushing Tessarac coverage being inside docker image "
+								cd $CODE_DIRECTORY
+							"""
+                        }
+                    }
+                    stage("Pushing Magellan-v2 coverage") {
+						// This environment section is with respect to this substage only
+						environment {
+							CODE_DIRECTORY = "/etc"
+						}
+                        steps {
+                            sh """
+								echo "Pushing Magellan-v2 coverage being inside docker image "
+								cd $CODE_DIRECTORY
+								echo $CODE_DIRECTORY
+								"""
+								
+								
+						}
+                    }
+					stage("Pushing NDP-base coverage") {
+						// This environment section is with respect to this substage only
+						environment {
+							CODE_DIRECTORY = "/var/lib"
+						}
+                        steps {
+                            sh """
+								echo "Pushing NDP-base coverage being inside docker image "
+								cd $CODE_DIRECTORY
+								echo $CODE_DIRECTORY
+								ls $CODE_DIRECTORY
+								"""
+								
+								
+						}
+                    }
+                }
+		}   
+        // Again we are running this stage on main docker agent `		
+		stage("Executing code again on normal docker label") {
+			steps {
+				sh """ 
+				echo "successfully executing on docker host"
+				docker images
+				"""
+			}				
+		}
+    }
+}

@@ -1,0 +1,90 @@
+pipeline {
+    agent { label 'docker'}
+    environment {
+        WORKSPACE = '/opt/jenkins/workspace/pipe'
+        dir = /opt/
+    }
+	
+    stages {
+	
+		stage("Executing steps dcoker lable"){
+			steps{
+			    sh """
+				echo "excuting on docker label"
+				docker images
+				"""
+				
+				checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'jpetstore-6']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/saiboby/jpetstore-6.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'myweb']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/saiboby/myweb.git']]])
+			}
+		}
+		stage("Pushing Code Coverage_docker_container") {
+            
+                agent {
+					docker {
+						label "docker"
+						image 'centos:latest'
+						args '-u root:root -v $WORKSPACE/jpetstore-6:/opt/jpetstore-6 -v /opt/jenkins/workspace/pipe/myweb:/opt/myweb -v /opt/projects/My-project:/opt/my1'
+						//reuseNode true
+						}	
+                    }
+                stages {
+                    stage("Puushing Tessarac coverage") {
+						// This environment section is with respect to this substage only
+						environment {
+							CODE_DIRECTORY = '/opt/jpetstore-6'
+						}
+                        steps {
+							sh """
+								echo "Pushing Tessarac coverage being inside docker image "
+								cd $CODE_DIRECTORY
+								ls -al
+							"""
+                        }
+                    }
+                    stage("Pushing Magellan-v2 coverage") {
+						// This environment section is with respect to this substage only
+						environment {
+							CODE_DIRECTORY = "/opt/myweb"
+						}
+                        steps {
+                            sh """
+								echo "Pushing Magellan-v2 coverage being inside docker image "
+								cd $CODE_DIRECTORY
+								echo $CODE_DIRECTORY
+								ls -al $CODE_DIRECTORY
+								"""
+								
+								
+						}
+                    }
+					stage("Pushing NDP-base coverage") {
+						// This environment section is with respect to this substage only
+						environment {
+							CODE_DIRECTORY = "/opt"
+						}
+                        steps {
+                            sh """
+								echo "Pushing NDP-base coverage being inside docker image "
+								cd $CODE_DIRECTORY
+								echo $CODE_DIRECTORY
+								ls $CODE_DIRECTORY
+								"""
+								
+								
+						}
+                    }
+                }
+		}   		
+		stage("Executing code again on normal docker label") {
+			steps {
+				sh """ 
+				echo "successfully executing on docker host"
+				docker images
+				echo $WORKSPACE
+				ls $WORKSPACE
+				"""
+			}				
+		}
+    }
+}

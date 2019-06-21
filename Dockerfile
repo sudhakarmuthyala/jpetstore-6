@@ -14,9 +14,12 @@
 #    limitations under the License.
 #
 
----
-- hosts: all
-  become: true
-  tasks:
-    - name: "copy the war to webapps"
-      copy: src=/root/Nexus_Repo/sonatype-work/nexus/storage/Nav/com/org/jpetstore/2.0/jpetstore-2.0.war dest=/var/lib/tomcat7/webapps
+FROM tomcat:8.5-jre8
+
+WORKDIR /usr/local/tomcat
+
+COPY target/jpetstore.war /usr/local/tomcat/webapps/jpetstore.war
+
+CMD ["catalina.sh", "run"]
+
+EXPOSE 8080
